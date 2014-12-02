@@ -48,11 +48,9 @@ class DepthFirstTreeAnalyser:
 				record_count += 1
 
 		results = self.get_active_data_items()
-		#print results
 		self.level_loops = int(results[0])
 		self.raw_data = results[1]
 		self.set_data(results[1])
-		#print self.data
 		self.arrange_data()
 
 
@@ -82,12 +80,8 @@ class DepthFirstTreeAnalyser:
 	def set_data(self, dat = []):
 		"""sets the class level variable data to dat list that has been passed"""
 		self.data = dat
-		#self.raw_data = raw
 
-	def get_raw_data(self):
-		"""returns the raw unanalysed data of the class; return raw_data list """
-		return self.raw_data
-		
+
 	def get_results(self):
 		"""returns the final analysed data of the class in it's arrange form """
 		return self.data
@@ -101,17 +95,16 @@ class DepthFirstTreeAnalyser:
 	def arrange_data(self):
 		"""Arranges the Items in the data list of the class in order of level >> parent"""		
 		#stores the class level data variable without the headers row; the final data product for this function
-		temp = self.get_results()[1:]	
-		#print temp
+		temp = self.get_results()[1:]
+		
 		#creates a dummy slot in the temp list for level [0] analysis
 		dummy_data = [-1,-1,-1,-1,-1,-1,-1]
 		dummy_data[self.get_header_index('id')] = 0
 		temp.append(dummy_data)
+		
 		#loops through the levels of the data list from the highest recorded to the lowest which is 0
 		while self.level_loops >= 0:
 			item_counter = int(len(self.data))
-			#print self.level_loops
-			#print item_counter
 			
 			#loops through the items of the temp list which is the class' data list without the headers
 			while item_counter>0:
@@ -125,10 +118,7 @@ class DepthFirstTreeAnalyser:
 			self.level_loops = self.level_loops - 1
 
 		#sets the final analyzed list of data items in a tree structure an organized in positions of level 0
-		#temp = sorted(temp, key=itemgetter(self.get_header_index('parent')))
-
 		temp = temp[0][self.get_header_index('children')]
-		#print temp
 		self.set_data(temp)
 
 
@@ -153,7 +143,6 @@ class DepthFirstTreeAnalyser:
 				if row[level_index] == self.level_loops:
 					#checks and gives a list of the children for the parent
 					if row[parent_index] == parent:
-						#print row
 						children_data.append(row)	
 
 			except IndexError:
@@ -181,7 +170,3 @@ class DepthFirstTreeAnalyser:
 
 
 		return dat
-
-#t = DepthFirstTreeAnalyser()
-#print t.get_results()
-#print t.get_raw_data()
